@@ -1,5 +1,35 @@
 # RogueShell
 
+```
+__________________________________________________________________________
+|                                                                        |
+|  ██████╗  ██████╗  ██████╗ ██╗   ██╗███████╗    ███████╗███████╗██╗  ██╗ |
+|  ██╔══██╗██╔═══██╗██╔════╝ ██║   ██║██╔════╝    ██╔════╝██╔════╝██║  ██║ |
+|  ██████╔╝██║   ██║██║  ███╗██║   ██║█████╗      ███████╗███████╗███████║ |
+|  ██╔══██╗██║   ██║██║   ██║██║   ██║██╔══╝      ╚════██║╚════██║██╔══██║ |
+|  ██║  ██║╚██████╔╝╚██████╔╝╚██████╔╝███████╗    ███████║███████║██║  ██║ |
+|  ╚═╝  ╚═╝ ╚═════╝  ╚═════╝  ╚═════╝ ╚══════╝    ╚══════╝╚══════╝╚═╝  ╚═╝ |
+|                                                                        |
+|                          - Rogue SSH -                                 |
+|________________________________________________________________________|
+
+Developed by: @RogueOps (https://github.com/M5RogueOps/)
+Community: https://www.ethicalhackersden.org
+
+--------------------------------------------------------------------------
+LICENSE: MIT
+--------------------------------------------------------------------------
+
+CREDIT REQUIREMENT:
+If this code is reused, modified, or packed into other distributions, 
+you must include the original developer credit:
+- Developed by: @RogueOps (https://github.com/M5RogueOps/)
+- Community: Ethical Hackers Den (https://www.ethicalhackersden.org)
+
+This attribution must remain visible in the source code headers 
+and/or the project documentation.
+```
+
 **RogueShell** is a high-performance, scrollable SSH client firmware specifically designed for the **M5Cardputer ADV**. 
 
 It was engineered to overcome the limitations of standard terminal firmware, providing essential features for field work: native terminal history, smooth command editing, and the ability to scroll through historical log output.
