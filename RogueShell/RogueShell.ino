@@ -1,31 +1,3 @@
-// __________________________________________________________________________
-// |                                                                        |
-// |  ██████╗  ██████╗  ██████╗ ██╗   ██╗███████╗    ███████╗███████╗██╗  ██╗ |
-// |  ██╔══██╗██╔═══██╗██╔════╝ ██║   ██║██╔════╝    ██╔════╝██╔════╝██║  ██║ |
-// |  ██████╔╝██║   ██║██║  ███╗██║   ██║█████╗      ███████╗███████╗███████║ |
-// |  ██╔══██╗██║   ██║██║   ██║██║   ██║██╔══╝      ╚════██║╚════██║██╔══██║ |
-// |  ██║  ██║╚██████╔╝╚██████╔╝╚██████╔╝███████╗    ███████║███████║██║  ██║ |
-// |  ╚═╝  ╚═╝ ╚═════╝  ╚═════╝  ╚═════╝ ╚══════╝    ╚══════╝╚══════╝╚═╝  ╚═╝ |
-// |                                                                        |
-// | - Rogue SSH -                                                          |
-// |________________________________________________________________________|
-
-// Developed by: @RogueOps (https://github.com/M5RogueOps/)
-// Community: https://www.ethicalhackersden.org
-
-// --------------------------------------------------------------------------
-// LICENSE: MIT
-// --------------------------------------------------------------------------
-
-// CREDIT REQUIREMENT:
-// If this code is reused, modified, or packed into other distributions, 
-// you must include the original developer credit:
-// - Developed by: @RogueOps (https://github.com/M5RogueOps/)
-// - Community: Ethical Hackers Den (https://www.ethicalhackersden.org)
-
-// This attribution must remain visible in the source code headers 
-// and/or the project documentation.
-
 #include <M5Cardputer.h>
 #include <WiFi.h>
 #include <libssh_esp32.h>
