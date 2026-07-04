@@ -26,6 +26,34 @@ __________________________________________________________________________
 // This attribution must remain visible in the source code headers 
 // and/or the project documentation.
 
+// __________________________________________________________________________
+// |                                                                        |
+// |  ██████╗  ██████╗  ██████╗ ██╗   ██╗███████╗    ███████╗███████╗██╗  ██╗ |
+// |  ██╔══██╗██╔═══██╗██╔════╝ ██║   ██║██╔════╝    ██╔════╝██╔════╝██║  ██║ |
+// |  ██████╔╝██║   ██║██║  ███╗██║   ██║█████╗      ███████╗███████╗███████║ |
+// |  ██╔══██╗██║   ██║██║   ██║██║   ██║██╔══╝      ╚════██║╚════██║██╔══██║ |
+// |  ██║  ██║╚██████╔╝╚██████╔╝╚██████╔╝███████╗    ███████║███████║██║  ██║ |
+// |  ╚═╝  ╚═╝ ╚═════╝  ╚═════╝  ╚═════╝ ╚══════╝    ╚══════╝╚══════╝╚═╝  ╚═╝ |
+// |                                                                        |
+// | - Rogue SSH -                                                          |
+// |________________________________________________________________________|
+
+// Developed by: @RogueOps (https://github.com/M5RogueOps/)
+// Community: https://www.ethicalhackersden.org
+
+// --------------------------------------------------------------------------
+// LICENSE: MIT
+// --------------------------------------------------------------------------
+
+// CREDIT REQUIREMENT:
+// If this code is reused, modified, or packed into other distributions, 
+// you must include the original developer credit:
+// - Developed by: @RogueOps (https://github.com/M5RogueOps/)
+// - Community: Ethical Hackers Den (https://www.ethicalhackersden.org)
+
+// This attribution must remain visible in the source code headers 
+// and/or the project documentation.
+
 #include <M5Cardputer.h>
 #include <WiFi.h>
 #include <libssh_esp32.h>
@@ -419,12 +447,11 @@ bool connectAll() {
     
     unsigned long start_time = millis();
     while (WiFi.status() != WL_CONNECTED) {
-        if (millis() - start_time > 8000) return false; 
+        if (millis() - start_time > 8000) return false;
         vTaskDelay(pdMS_TO_TICKS(100));
     }
 
     drawStatusBar("WiFi Connected. Connecting SSH...", TFT_DARKGREEN);
-    
     if (ssh.connect(ssh_host.c_str(), ssh_port, ssh_user.c_str(), ssh_pass.c_str())) {
         ssh.openShell();
         return true;
@@ -471,7 +498,6 @@ void handleTerminalKeyboard() {
             term.scrollDown(3);
             return;
         }
-        // Explicit return: Holding FN without pressing ; or . does nothing!
         return;
     }
 
@@ -485,9 +511,33 @@ void handleTerminalKeyboard() {
         return;
     }
 
-    // --- REMOVED THE ROGUE STANDALONE scrollToBottom() CHECK HERE ---
+    // 5. Send ASCII Control Codes (Ctrl + A-Z for Nano / Terminal Shortcuts)
+    if (ctrl_pressed) {
+        term.scrollToBottom();
+        // Directly scan hardware keys to bypass empty word vector
+        for (char k = 'a'; k <= 'z'; k++) {
+            if (M5Cardputer.Keyboard.isKeyPressed(k)) {
+                char ctrl_char = k - 'a' + 1; // Converts 'a'->1, 'o'->15 (Ctrl+O), 'x'->24 (Ctrl+X), etc.
+                ssh.write(&ctrl_char, 1);
+                return;
+            }
+        }
+        // Fallback check if character landed in word vector anyway
+        for (auto c : status.word) {
+            if (c >= 'a' && c <= 'z') {
+                char ctrl_char = c - 'a' + 1;
+                ssh.write(&ctrl_char, 1);
+            } else if (c >= 'A' && c <= 'Z') {
+                char ctrl_char = c - 'A' + 1;
+                ssh.write(&ctrl_char, 1);
+            } else if (c >= 1 && c <= 26) {
+                ssh.write(&c, 1);
+            }
+        }
+        return;
+    }
 
-    // 5. Transmit Carriage Return on Enter & Save Command to History
+    // 6. Transmit Carriage Return on Enter & Save Command to History
     if (status.enter || M5Cardputer.Keyboard.isKeyPressed(KEY_ENTER)) {
         term.scrollToBottom();
         if (current_input_line.length() > 0) {
@@ -502,7 +552,7 @@ void handleTerminalKeyboard() {
         return;
     }
 
-    // 6. Transmit ASCII 127 (DEL) on Backspace
+    // 7. Transmit ASCII 127 (DEL) on Backspace
     if (status.del || M5Cardputer.Keyboard.isKeyPressed(KEY_BACKSPACE)) {
         term.scrollToBottom();
         if (current_input_line.length() > 0) {
@@ -513,17 +563,12 @@ void handleTerminalKeyboard() {
         return;
     }
 
-    // 7. Transmit Standard Characters
+    // 8. Transmit Standard Characters
     if (status.word.size() > 0) {
         term.scrollToBottom();
         for (auto c : status.word) {
-            if (ctrl_pressed && c >= 'a' && c <= 'z') {
-                char ctrl_char = c - 'a' + 1;
-                ssh.write(&ctrl_char, 1);
-            } else {
-                current_input_line += c;
-                ssh.write(&c, 1);
-            }
+            current_input_line += c;
+            ssh.write(&c, 1);
         }
     }
 }
@@ -531,10 +576,8 @@ void handleTerminalKeyboard() {
 // --- Dedicated FreeRTOS Task with 48KB Stack ---
 void sshMainTask(void* pvParameters) {
     esp_task_wdt_add(NULL);
-
     while (true) {
         esp_task_wdt_reset();
-
         switch (currentState) {
             case STATE_CONNECTING:
                 if (connectAll()) {
@@ -548,17 +591,14 @@ void sshMainTask(void* pvParameters) {
                     renderSettingsMenu();
                 }
                 break;
-
             case STATE_SETTINGS:
                 handleSettingsKeyboard();
                 vTaskDelay(pdMS_TO_TICKS(10));
                 break;
-
             case STATE_HISTORY:
                 handleHistoryKeyboard();
                 vTaskDelay(pdMS_TO_TICKS(10));
                 break;
-
             case STATE_TERMINAL:
                 uint8_t rx_buf[256];
                 int bytes_read = ssh.read(rx_buf, sizeof(rx_buf) - 1);
@@ -568,7 +608,6 @@ void sshMainTask(void* pvParameters) {
                 }
 
                 handleTerminalKeyboard();
-
                 if (term.isDirty()) {
                     term.render(sprite);
                     drawStatusBar("SSH Connected [FN+s: Settings | FN+h: History]", TFT_GREEN);
