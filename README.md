@@ -42,8 +42,8 @@ When you first boot **RogueShell**, it will enter the Settings Menu if no creden
     * [LibSSH-ESP32](https://github.com/ewan-parker/libssh-esp32)
     * ESP32 Board Manager (ESP32-S3)
 
-## License
+## License MIT
 Built for the field. Modify, adapt, and deploy as needed.
-
+Please If re packaged leave a credit to RogueOps @ https://www.ethicalhackersden.org
 ---
 *Designed for those who need a tool that just works, every time.*
