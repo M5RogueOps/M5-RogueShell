@@ -1,3 +1,17 @@
+/*
+ * --------------------------------------------------------------------------
+ *  Rogue Shell - RogueShell is a high-performance, scrollable SSH client 
+ *  firmware specifically designed for the M5Stack Cardputer ADV
+ *
+ *  ETHICAL HACKERS DEN - SECURITY TOOLS SUITE
+ *  Website: www.ethicalhackersden.org
+ *  GitHub:  https://github.com/M5RogueOps
+ *
+ *  DISCLAIMER: This software is licensed under the MIT License. 
+ *  Under the terms of this license, these credit links must remain 
+ *  included within the source code.
+ * --------------------------------------------------------------------------
+ */
 #include <M5Cardputer.h>
 #include <WiFi.h>
 #include <libssh_esp32.h>
